@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kumbara</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      color: #555;
+    }
+
+    /* Toplam birikim */
+    .total-section {
+      background: #2d6a4f;
+      color: #fff;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .total-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    .total-amount {
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    /* Hedef */
+    .goal-area {
+      margin-top: 16px;
+    }
+
+    .goal-setup {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .goal-setup input {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      outline: none;
+    }
+
+    .goal-setup input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .goal-setup input:focus {
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .goal-setup button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      transition: background 0.2s;
+    }
+
+    .goal-setup button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .goal-progress {
+      margin-top: 12px;
+    }
+
+    .goal-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .goal-progress-header button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    .goal-progress-header button:hover {
+      color: #fff;
+    }
+
+    .goal-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .goal-bar-fill {
+      height: 100%;
+      background: #95d5b2;
+      border-radius: 5px;
+      transition: width 0.4s ease;
+    }
+
+    .goal-percent {
+      text-align: center;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .goal-set-btn {
+      margin-top: 12px;
+      padding: 8px 16px;
+      border: 1px dashed rgba(255,255,255,0.4);
+      border-radius: 8px;
+      background: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.8rem;
+      cursor: pointer;
+      width: 100%;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .goal-set-btn:hover {
+      border-color: rgba(255,255,255,0.7);
+      color: #fff;
+    }
+
+    /* Form */
+    .form-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .form-row {
+      margin-bottom: 12px;
+    }
+
+    .form-row:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: #2d6a4f;
+    }
+
+    .btn-add {
+      width: 100%;
+      padding: 12px;
+      background: #2d6a4f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-add:hover {
+      background: #1b4332;
+    }
+
+    /* Geçmiş */
+    .history-section h2 {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .history-list {
+      list-style: none;
+    }
+
+    .history-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .history-info {
+      flex: 1;
+    }
+
+    .history-amount {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2d6a4f;
+    }
+
+    .history-meta {
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .history-note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .btn-delete:hover {
+      color: #e63946;
+      background: #fef2f2;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      padding: 32px 0;
+    }
+
+    /* Rozetler */
+    .badges-section {
+      margin-bottom: 24px;
+    }
+
+    .badges-section h2 {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .badge {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 4px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      cursor: default;
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .badge:hover {
+      transform: translateY(-2px);
+    }
+
+    .badge-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .badge-name {
+      font-size: 0.65rem;
+      color: #333;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .badge.locked {
+      opacity: 0.35;
+      filter: grayscale(1);
+    }
+
+    .badge.locked .badge-icon {
+      filter: grayscale(1);
+    }
+
+    .badge-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .badge-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #333;
+    }
+
+    .badge:hover .badge-tooltip {
+      display: block;
+    }
+
+    /* Toast bildirim */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #fff;
+      border: 2px solid #2d6a4f;
+      border-radius: 12px;
+      padding: 12px 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.4s ease, toastOut 0.4s ease 2.6s forwards;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .toast-icon {
+      font-size: 1.4rem;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-20px); }
+    }
+
+    /* Confetti */
+    .confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    /* Auth */
+    .auth-section {
+      display: none;
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .auth-section h2 {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .auth-section .form-row {
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .auth-section .btn-auth {
+      width: 100%;
+      padding: 12px;
+      background: #2d6a4f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .auth-section .btn-auth:hover {
+      background: #1b4332;
+    }
+
+    .auth-section .btn-auth:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .auth-toggle {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .auth-toggle a {
+      color: #2d6a4f;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .auth-toggle a:hover {
+      text-decoration: underline;
+    }
+
+    .auth-message {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .auth-message.error {
+      display: block;
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .auth-message.success {
+      display: block;
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+
+    .user-header {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 8px 0;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: #666;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-logout {
+      padding: 6px 14px;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: #666;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+      margin-left: 12px;
+    }
+
+    .btn-logout:hover {
+      border-color: #e63946;
+      color: #e63946;
+    }
+
+    #appSection {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Auth Section -->
+    <div class="auth-section" id="authSection">
+      <h1>Kumbara</h1>
+      <div class="auth-message" id="authMessage"></div>
+
+      <!-- Giriş Formu -->
+      <form id="loginForm">
+        <h2>Giriş Yap</h2>
+        <div class="form-row">
+          <label for="loginEmail">E-posta</label>
+          <input type="email" id="loginEmail" placeholder="ornek@mail.com" required>
+        </div>
+        <div class="form-row">
+          <label for="loginPassword">Şifre</label>
+          <input type="password" id="loginPassword" placeholder="Şifreniz" minlength="6" required>
+        </div>
+        <div class="form-row">
+          <button type="submit" class="btn-auth" id="loginBtn">Giriş Yap</button>
+        </div>
+        <div class="auth-toggle">
+          Hesabın yok mu? <a onclick="toggleAuthMode('signup')">Kayıt ol</a>
+        </div>
+      </form>
+
+      <!-- Kayıt Formu -->
+      <form id="signupForm" style="display:none">
+        <h2>Kayıt Ol</h2>
+        <div class="form-row">
+          <label for="signupEmail">E-posta</label>
+          <input type="email" id="signupEmail" placeholder="ornek@mail.com" required>
+        </div>
+        <div class="form-row">
+          <label for="signupPassword">Şifre</label>
+          <input type="password" id="signupPassword" placeholder="En az 6 karakter" minlength="6" required>
+        </div>
+        <div class="form-row">
+          <label for="signupPassword2">Şifre Tekrar</label>
+          <input type="password" id="signupPassword2" placeholder="Şifrenizi tekrar girin" minlength="6" required>
+        </div>
+        <div class="form-row">
+          <button type="submit" class="btn-auth" id="signupBtn">Kayıt Ol</button>
+        </div>
+        <div class="auth-toggle">
+          Hesabın var mı? <a onclick="toggleAuthMode('login')">Giriş yap</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- App Section -->
+    <div id="appSection">
+    <div class="user-header" id="userHeader">
+      <span class="user-email" id="userEmail"></span>
+      <button class="btn-logout" onclick="handleSignOut()">Çıkış</button>
+    </div>
+
+    <h1>Kumbara</h1>
+
+    <div class="total-section">
+      <div class="total-label">Toplam Birikim</div>
+      <div class="total-amount" id="totalAmount">0,00 ₺</div>
+      <div class="goal-area" id="goalArea"></div>
+    </div>
+
+    <div class="badges-section">
+      <h2>Rozetler</h2>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <form class="form-section" id="entryForm">
+      <div class="form-row">
+        <label for="amount">Tutar (₺)</label>
+        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+      </div>
+      <div class="form-row">
+        <label for="note">Not (isteğe bağlı)</label>
+        <input type="text" id="note" placeholder="Örn: Maaştan birikim">
+      </div>
+      <div class="form-row">
+        <label for="date">Tarih</label>
+        <input type="date" id="date">
+      </div>
+      <div class="form-row">
+        <button type="submit" class="btn-add">Ekle</button>
+      </div>
+    </form>
+
+    <div class="history-section">
+      <h2>Geçmiş</h2>
+      <ul class="history-list" id="historyList"></ul>
+    </div>
+    </div><!-- /appSection -->
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://mgshlmmsihjwnnhnrpyh.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nc2hsbW1zaWhqd25uaG5ycHloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyODg1MDgsImV4cCI6MjA4Nzg2NDUwOH0.XwbcLnSRI6KI_L4Qw5iNCBJi6EDP105zKaasT5kcYKo';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // --- Auth ---
+
+    const authSection = document.getElementById('authSection');
+    const appSection = document.getElementById('appSection');
+    const userHeader = document.getElementById('userHeader');
+    const userEmailEl = document.getElementById('userEmail');
+    const authMessage = document.getElementById('authMessage');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    function showAuthMessage(text, type) {
+      authMessage.textContent = text;
+      authMessage.className = 'auth-message ' + type;
+    }
+
+    function clearAuthMessage() {
+      authMessage.textContent = '';
+      authMessage.className = 'auth-message';
+    }
+
+    function toggleAuthMode(mode) {
+      clearAuthMessage();
+      if (mode === 'signup') {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+      } else {
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      }
+    }
+
+    function showApp(user) {
+      authSection.style.display = 'none';
+      appSection.style.display = 'block';
+      userHeader.style.display = 'flex';
+      userEmailEl.textContent = user.email;
+      render();
+    }
+
+    function showAuth() {
+      appSection.style.display = 'none';
+      userHeader.style.display = 'none';
+      authSection.style.display = 'block';
+      toggleAuthMode('login');
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAuthMessage();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'Giriş yapılıyor...';
+
+      const { error } = await db.auth.signInWithPassword({ email, password });
+
+      btn.disabled = false;
+      btn.textContent = 'Giriş Yap';
+
+      if (error) {
+        const msg = error.message === 'Invalid login credentials'
+          ? 'E-posta veya şifre hatalı.'
+          : error.message === 'Email not confirmed'
+          ? 'Lütfen önce e-postanızı onaylayın.'
+          : error.message;
+        showAuthMessage(msg, 'error');
+      }
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAuthMessage();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const password2 = document.getElementById('signupPassword2').value;
+
+      if (password !== password2) {
+        showAuthMessage('Şifreler eşleşmiyor.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('signupBtn');
+      btn.disabled = true;
+      btn.textContent = 'Kayıt olunuyor...';
+
+      const { error } = await db.auth.signUp({ email, password });
+
+      btn.disabled = false;
+      btn.textContent = 'Kayıt Ol';
+
+      if (error) {
+        showAuthMessage(error.message, 'error');
+      } else {
+        showAuthMessage('Kayıt başarılı! E-posta adresinize onay linki gönderildi. Lütfen e-postanızı kontrol edin.', 'success');
+      }
+    });
+
+    async function handleSignOut() {
+      await db.auth.signOut();
+    }
+
+    // Auth state listener
+    db.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        showApp(session.user);
+      } else {
+        showAuth();
+      }
+    });
+
+    const SEEN_BADGES_KEY = 'kumbara_seen_badges';
+    const GOAL_CELEBRATED_KEY = 'kumbara_goal_celebrated';
+
+    const BADGES = [
+      { id: 'first',      name: 'İlk Adım',       icon: '🌱', desc: '1. birikimini yap',           check: (e, t) => e.length >= 1 },
+      { id: 'regular',    name: 'Düzenli',         icon: '⭐', desc: '10 birikim gir',              check: (e, t) => e.length >= 10 },
+      { id: 'determined', name: 'Kararlı',         icon: '🔥', desc: '25 birikim gir',              check: (e, t) => e.length >= 25 },
+      { id: 'veteran',    name: 'Veteran',         icon: '💪', desc: '50 birikim gir',              check: (e, t) => e.length >= 50 },
+      { id: 'legend',     name: 'Efsane',          icon: '👑', desc: '100 birikim gir',             check: (e, t) => e.length >= 100 },
+      { id: 'starter',    name: 'Başlangıç',       icon: '🪙', desc: '100 ₺ biriktir',              check: (e, t) => t >= 100 },
+      { id: 'master',     name: 'Birikim Ustası',  icon: '💰', desc: '1.000 ₺ biriktir',            check: (e, t) => t >= 1000 },
+      { id: 'vault',      name: 'Kasa Dolu',       icon: '🏦', desc: '5.000 ₺ biriktir',            check: (e, t) => t >= 5000 },
+      { id: 'rich',       name: 'Zengin',          icon: '💎', desc: '10.000 ₺ biriktir',           check: (e, t) => t >= 10000 },
+      { id: 'mogul',      name: 'Mogul',           icon: '🏆', desc: '50.000 ₺ biriktir',           check: (e, t) => t >= 50000 },
+    ];
+
+    const totalEl = document.getElementById('totalAmount');
+    const historyEl = document.getElementById('historyList');
+    const badgesEl = document.getElementById('badgesGrid');
+    const goalAreaEl = document.getElementById('goalArea');
+    const toastContainer = document.getElementById('toastContainer');
+    const form = document.getElementById('entryForm');
+    const amountInput = document.getElementById('amount');
+    const noteInput = document.getElementById('note');
+    const dateInput = document.getElementById('date');
+
+    dateInput.value = new Date().toISOString().slice(0, 10);
+
+    // --- Supabase veri fonksiyonları ---
+
+    async function getEntries() {
+      const { data, error } = await db
+        .from('kumbara_entries')
+        .select('*')
+        .order('entry_date', { ascending: false })
+        .order('id', { ascending: false });
+      if (error) { console.error('getEntries:', error); return []; }
+      return data.map(r => ({ ...r, amount: Number(r.amount) }));
+    }
+
+    async function addEntry(amount, note, date) {
+      const { error } = await db
+        .from('kumbara_entries')
+        .insert({ amount: parseFloat(amount), note: note.trim(), entry_date: date });
+      if (error) { console.error('addEntry:', error); return; }
+      await render();
+      const entries = await getEntries();
+      const total = entries.reduce((sum, e) => sum + e.amount, 0);
+      checkNewBadges(entries, total);
+      checkGoalReached(total);
+    }
+
+    async function deleteEntry(id) {
+      const { error } = await db
+        .from('kumbara_entries')
+        .delete()
+        .eq('id', id);
+      if (error) { console.error('deleteEntry:', error); return; }
+      const entries = await getEntries();
+      const total = entries.reduce((sum, e) => sum + e.amount, 0);
+      const seen = getSeenBadges().filter(bid => {
+        const badge = BADGES.find(b => b.id === bid);
+        return badge && badge.check(entries, total);
+      });
+      saveSeenBadges(seen);
+      await render();
+    }
+
+    async function getGoal() {
+      const { data, error } = await db
+        .from('kumbara_goals')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+      if (error) { console.error('getGoal:', error); return null; }
+      if (!data) return null;
+      return { ...data, amount: Number(data.amount) };
+    }
+
+    async function saveGoal(goal) {
+      await db.from('kumbara_goals').delete().neq('id', 0);
+      if (goal) {
+        const { error } = await db
+          .from('kumbara_goals')
+          .insert({ name: goal.name, amount: goal.amount });
+        if (error) console.error('saveGoal:', error);
+      }
+    }
+
+    // --- Biçimlendirme ---
+
+    function formatMoney(amount) {
+      return new Intl.NumberFormat('tr-TR', {
+        style: 'currency',
+        currency: 'TRY',
+        minimumFractionDigits: 2,
+      }).format(amount);
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('tr-TR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // --- Hedef UI ---
+
+    let cachedGoal = null;
+
+    async function renderGoal(total) {
+      const goal = await getGoal();
+      cachedGoal = goal;
+
+      if (!goal) {
+        goalAreaEl.innerHTML = `
+          <button class="goal-set-btn" onclick="showGoalForm()">Hedef belirle</button>
+        `;
+        return;
+      }
+
+      const percent = Math.min((total / goal.amount) * 100, 100);
+      const remaining = Math.max(goal.amount - total, 0);
+
+      goalAreaEl.innerHTML = `
+        <div class="goal-progress">
+          <div class="goal-progress-header">
+            <span>Hedef: ${escapeHtml(goal.name)} (${formatMoney(goal.amount)})</span>
+            <button onclick="showGoalForm()" title="Düzenle">Düzenle</button>
+            <button onclick="clearGoal()" title="Kaldır">Kaldır</button>
+          </div>
+          <div class="goal-bar">
+            <div class="goal-bar-fill" style="width: ${percent}%"></div>
+          </div>
+          <div class="goal-percent">
+            ${percent >= 100 ? 'Hedefe ulaştın!' : `%${percent.toFixed(1)} — Kalan: ${formatMoney(remaining)}`}
+          </div>
+        </div>
+      `;
+    }
+
+    function showGoalForm() {
+      const goal = cachedGoal;
+      goalAreaEl.innerHTML = `
+        <div class="goal-setup">
+          <input type="text" id="goalName" placeholder="Hedef adı" value="${goal ? escapeHtml(goal.name) : ''}">
+          <input type="number" id="goalAmount" placeholder="Tutar" step="0.01" min="1" value="${goal ? goal.amount : ''}">
+          <button onclick="saveGoalFromForm()">Kaydet</button>
+        </div>
+      `;
+      document.getElementById('goalName').focus();
+    }
+
+    async function saveGoalFromForm() {
+      const name = document.getElementById('goalName').value.trim();
+      const amount = parseFloat(document.getElementById('goalAmount').value);
+      if (!name || !amount || amount <= 0) return;
+      await saveGoal({ name, amount });
+      localStorage.removeItem(GOAL_CELEBRATED_KEY);
+      await render();
+      const entries = await getEntries();
+      const total = entries.reduce((sum, e) => sum + e.amount, 0);
+      checkGoalReached(total);
+    }
+
+    async function clearGoal() {
+      await saveGoal(null);
+      localStorage.removeItem(GOAL_CELEBRATED_KEY);
+      await render();
+    }
+
+    // --- Confetti ---
+
+    function launchConfetti() {
+      const canvas = document.createElement('canvas');
+      canvas.className = 'confetti-canvas';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+
+      const colors = ['#2d6a4f', '#95d5b2', '#f4a261', '#e76f51', '#e9c46a', '#264653', '#e63946', '#a8dadc'];
+      const particles = [];
+
+      for (let i = 0; i < 150; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          w: Math.random() * 8 + 4,
+          h: Math.random() * 4 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 4,
+          vy: Math.random() * 3 + 2,
+          rot: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 10,
+          opacity: 1,
+        });
+      }
+
+      let frame = 0;
+      const maxFrames = 180;
+
+      function animate() {
+        frame++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (const p of particles) {
+          p.x += p.vx;
+          p.vy += 0.05;
+          p.y += p.vy;
+          p.rot += p.rotSpeed;
+          if (frame > maxFrames - 40) {
+            p.opacity = Math.max(0, p.opacity - 0.025);
+          }
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        }
+
+        if (frame < maxFrames) {
+          requestAnimationFrame(animate);
+        } else {
+          canvas.remove();
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function checkGoalReached(total) {
+      if (!cachedGoal) return;
+      const celebrated = localStorage.getItem(GOAL_CELEBRATED_KEY);
+      if (total >= cachedGoal.amount && celebrated !== 'true') {
+        localStorage.setItem(GOAL_CELEBRATED_KEY, 'true');
+        launchConfetti();
+      }
+    }
+
+    // --- Rozetler (localStorage — UI state) ---
+
+    function getSeenBadges() {
+      try {
+        return JSON.parse(localStorage.getItem(SEEN_BADGES_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSeenBadges(seen) {
+      localStorage.setItem(SEEN_BADGES_KEY, JSON.stringify(seen));
+    }
+
+    function showToast(badge) {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `<span class="toast-icon">${badge.icon}</span> ${escapeHtml(badge.name)} rozetini kazandın!`;
+      toastContainer.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    function renderBadges(entries, total) {
+      badgesEl.innerHTML = BADGES.map(badge => {
+        const unlocked = badge.check(entries, total);
+        return `
+          <div class="badge ${unlocked ? '' : 'locked'}">
+            <div class="badge-tooltip">${unlocked ? escapeHtml(badge.name) : escapeHtml(badge.desc)}</div>
+            <div class="badge-icon">${badge.icon}</div>
+            <div class="badge-name">${escapeHtml(badge.name)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function checkNewBadges(entries, total) {
+      const seen = getSeenBadges();
+      const newlyUnlocked = [];
+
+      for (const badge of BADGES) {
+        if (badge.check(entries, total) && !seen.includes(badge.id)) {
+          newlyUnlocked.push(badge);
+          seen.push(badge.id);
+        }
+      }
+
+      if (newlyUnlocked.length > 0) {
+        saveSeenBadges(seen);
+        newlyUnlocked.forEach(b => showToast(b));
+      }
+    }
+
+    // --- Ana render ---
+
+    async function render() {
+      const entries = await getEntries();
+
+      const total = entries.reduce((sum, e) => sum + e.amount, 0);
+      totalEl.textContent = formatMoney(total);
+
+      await renderGoal(total);
+      renderBadges(entries, total);
+
+      if (entries.length === 0) {
+        historyEl.innerHTML = '<li class="empty-state">Henüz birikim yok</li>';
+        return;
+      }
+
+      historyEl.innerHTML = entries.map(entry => `
+        <li class="history-item">
+          <div class="history-info">
+            <div class="history-amount">${formatMoney(entry.amount)}</div>
+            ${entry.note ? `<div class="history-note">${escapeHtml(entry.note)}</div>` : ''}
+            <div class="history-meta">${formatDate(entry.entry_date)}</div>
+          </div>
+          <button class="btn-delete" onclick="deleteEntry(${entry.id})" title="Sil">&times;</button>
+        </li>
+      `).join('');
+    }
+
+    // --- Form ---
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const amount = amountInput.value;
+      const note = noteInput.value;
+      const date = dateInput.value;
+
+      if (!amount || parseFloat(amount) <= 0) return;
+
+      await addEntry(amount, note, date);
+      amountInput.value = '';
+      noteInput.value = '';
+      dateInput.value = new Date().toISOString().slice(0, 10);
+      amountInput.focus();
+    });
+
+    // İlk yüklemede mevcut oturumu kontrol et
+    db.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        showApp(session.user);
+      } else {
+        showAuth();
+      }
+    });
+  </script>
+</body>
+</html>
